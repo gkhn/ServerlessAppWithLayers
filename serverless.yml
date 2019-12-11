@@ -1,4 +1,4 @@
-service: DemoServerlessApp
+service: ServerlessAppWithLayers
 provider:
   name: aws
   stage: dev
