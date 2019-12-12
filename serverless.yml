@@ -24,6 +24,23 @@ provider:
             - Ref: 'AWS::Region'
             - Ref: 'AWS::AccountId'
             - 'table/${self:custom.messagesTableName}'
+custom:
+  messagesTableName: messages
+resources:
+  Resources:
+    MessagesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.messagesTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 functions:
   getMessages:
     handler: functions/getMessages.getMessages
@@ -46,20 +63,3 @@ layers:
     path: layers/reverser
     name: ${self:provider.stage}-reverser
     description: String reverser module
-custom:
-  messagesTableName: messages
-resources:
-  Resources:
-    MessagesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.messagesTableName}
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
